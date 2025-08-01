@@ -1,12 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>MindAR com Logo Clicável</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <!-- 
+      CSS para posicionar e estilizar o logo.
+    -->
+    <style>
+      body {
+        /* Garante que não haja margens ou barras de rolagem indesejadas */
+        margin: 0;
+        overflow: hidden;
+      }
+
+      /* Contêiner que segura o link e a imagem do logo */
+      .logo-container {
+        position: absolute; /* Posicionamento absoluto em relação à tela */
+        bottom: 20px; /* 20 pixels de distância do fundo */
+        left: 20px; /* 20 pixels de distância da esquerda */
+        z-index: 9999; /* Garante que fique sobre todos os outros elementos */
+      }
+
+      /* Estilos para a imagem do logo dentro do link */
+      .logo-container img {
+        height: 40px; /* Altura sutil para não ser muito intrusivo */
+        width: auto; /* Largura automática para manter a proporção */
+        display: block; /* Remove espaços extras indesejados */
+        opacity: 0.8; /* Leve transparência para melhor integração visual (UX) */
+      }
+    </style>
   </head>
+
   <body>
-    <!-- A cena aponta para o seu arquivo de alvos local -->
+    <!-- 
+      1. LOGO CLICÁVEL (HTML)
+      Este bloco cria o logo. Ele está fora da <a-scene> para funcionar como uma interface 2D fixa.
+    -->
+    <a
+      href="https://bio.link/orbee360"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="logo-container"
+    >
+      <!-- 
+        - href: Link para o seu cartão virtual.
+        - target="_blank": Abre em uma nova aba para não interromper a experiência de AR.
+        - class="logo-container": Aplica os estilos CSS que definimos acima.
+      -->
+      <img src="./orbee360.png" alt="Logo Orbee 360" />
+    </a>
+
+    <!-- 
+      2. CENA DE REALIDADE AUMENTADA (MindAR)
+      Sua cena 3D original, sem modificações, que roda por baixo do logo.
+    -->
     <a-scene
       mindar-image="imageTargetSrc: ./targets.mind;"
       color-space="sRGB"
@@ -14,32 +64,17 @@
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
-      <!-- 
-        1. "DESPENSA" (<a-assets>):
-           Pré-carregamos o modelo 3D usando a tag <a-asset-item>.
-           - Damos a ele o ID "naveModel" para usá-lo depois.
-           - O caminho (src) aponta para o arquivo na mesma pasta.
-      -->
       <a-assets>
-        <a-asset-item id="naveModel" src="./casa.glb"></a-asset-item>
+        <!-- Pré-carrega seu modelo 3D 'casa.glb' -->
+        <a-asset-item id="casaModel" src="./casa.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- 
-        2. "PALCO" (<a-entity>):
-           Este é o conteúdo que aparece quando o alvo é encontrado.
-      -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <!--
-          3. O OBJETO 3D (<a-gltf-model>):
-             Esta é a tag para exibir um modelo 3D no formato glTF/glb.
-             - src="#naveModel": Pega o modelo que carregamos nos assets.
-             - animation-mixer: Este é o componente MÁGICO! Ele encontra e
-               ativa automaticamente as animações que existem dentro do arquivo .glb.
-        -->
+        <!-- Exibe o modelo 3D quando o alvo é detectado -->
         <a-gltf-model
-          src="#naveModel"
+          src="#casaModel"
           position="0 0 0"
           rotation="0 0 0"
           scale="0.1 0.1 0.1"
