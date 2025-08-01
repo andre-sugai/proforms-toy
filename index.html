@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <!-- A cena aponta para o seu arquivo de alvos local -->
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets.mind;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <!-- 
+        1. "DESPENSA" (<a-assets>):
+           Pré-carregamos o modelo 3D usando a tag <a-asset-item>.
+           - Damos a ele o ID "naveModel" para usá-lo depois.
+           - O caminho (src) aponta para o arquivo na mesma pasta.
+      -->
+      <a-assets>
+        <a-asset-item id="naveModel" src="./nave.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- 
+        2. "PALCO" (<a-entity>):
+           Este é o conteúdo que aparece quando o alvo é encontrado.
+      -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!--
+          3. O OBJETO 3D (<a-gltf-model>):
+             Esta é a tag para exibir um modelo 3D no formato glTF/glb.
+             - src="#naveModel": Pega o modelo que carregamos nos assets.
+             - animation-mixer: Este é o componente MÁGICO! Ele encontra e
+               ativa automaticamente as animações que existem dentro do arquivo .glb.
+        -->
+        <a-gltf-model
+          src="#naveModel"
+          position="0 0 0"
+          rotation="0 0 0"
+          scale="0.1 0.1 0.1"
+          animation-mixer
+        ></a-gltf-model>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
