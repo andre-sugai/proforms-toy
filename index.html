@@ -25,48 +25,15 @@
         opacity: 0.8;
       }
 
-      /* 2. CSS para o nosso scanner customizado */
-      .custom-scanner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80vmin; /* Usa o menor lado da tela como referência */
-        height: 80vmin;
-        border: 4px solid transparent;
-        /* O truque do gradiente giratório */
-        background: linear-gradient(white, white) padding-box,
-          conic-gradient(
-              from 0deg,
-              #ff0000,
-              #ffff00,
-              #00ff00,
-              #00ffff,
-              #0000ff,
-              #ff00ff,
-              #ff0000
-            )
-            border-box;
-        animation: spin 3s linear infinite;
-      }
-      /* Animação que gira o scanner */
-      @keyframes spin {
-        from {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-      /* Classe para esconder o scanner quando o alvo for encontrado */
-      .hidden {
-        display: none;
+      /* 2. CSS para alterar a cor do scanner */
+      .mindar-ui-scanning .scanning-frame {
+        border-color: #ff0000; /* Cor vermelha */
       }
     </style>
   </head>
 
   <body>
-    <!-- Logo -->
+    <!-- Logo no canto inferior direito -->
     <a
       href="https://bio.link/orbee360"
       target="_blank"
@@ -76,13 +43,9 @@
       <img src="./orbee360.png" alt="Logo Orbee 360" />
     </a>
 
-    <!-- 3. Elemento HTML para nosso scanner customizado -->
-    <div id="custom-scanner-ui" class="custom-scanner"></div>
-
     <!-- Cena MindAR -->
-    <!-- 4. Desligamos o scanner padrão com uiScanning: "no" -->
     <a-scene
-      mindar-image="imageTargetSrc: ./targets.mind; uiScanning: no;"
+      mindar-image="imageTargetSrc: ./targets.mind;"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
@@ -100,25 +63,5 @@
         ></a-gltf-model>
       </a-entity>
     </a-scene>
-
-    <!-- 5. JavaScript para controlar a visibilidade do nosso scanner -->
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const sceneEl = document.querySelector('a-scene');
-        const scannerUI = document.querySelector('#custom-scanner-ui');
-
-        // Escuta o evento 'targetFound' para esconder o scanner
-        sceneEl.addEventListener('targetFound', (event) => {
-          console.log('Alvo encontrado, escondendo scanner.');
-          scannerUI.classList.add('hidden');
-        });
-
-        // Escuta o evento 'targetLost' para mostrar o scanner novamente
-        sceneEl.addEventListener('targetLost', (event) => {
-          console.log('Alvo perdido, mostrando scanner.');
-          scannerUI.classList.remove('hidden');
-        });
-      });
-    </script>
   </body>
 </html>
